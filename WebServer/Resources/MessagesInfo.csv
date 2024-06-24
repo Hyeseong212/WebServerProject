@@ -1,0 +1,6 @@
+TYPE,MessageCode,Message
+Error,1,Invalid password.
+Error,2,The ID already exists.
+Error,3,Please create a password that is at least 10 characters long.
+Error,4,"The password must contain a mix of special characters, numbers, and letters."
+Error,5,The ID does not exist.
