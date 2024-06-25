@@ -23,4 +23,15 @@
         public bool IsSuccess { get; set; }
         public string Message { get; set; }
     }
+    public class AccountNickNameRequest : BaseRequest
+    {
+        public long AccountId { get; set; }
+        public string NickName { get; set; }
+    }
+
+    public class AccountNickNameResponse : BaseResponse
+    {
+        public bool IsSuccess { get; set; }
+        public string Message { get; set; }
+    }
 }

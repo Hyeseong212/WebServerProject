@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebServer.Model.DbEntity
+namespace WebServer.Model.DbEntity 
 {
     [Table("account")]
     public class AccountEntity
@@ -35,5 +35,14 @@ namespace WebServer.Model.DbEntity
 
         [Column("gold")]
         public long Gold { get; set; }
+    }
+    [Table("account_nickname")]
+    public class AccountNickNameEntity
+    {
+        [Column("account_id")]
+        public long AccountId { get; set; }
+
+        [Column("account_NickName")]
+        public string AccountNickName { get; set; }
     }
 }

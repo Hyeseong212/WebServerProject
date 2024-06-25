@@ -40,5 +40,15 @@ namespace WebServer.Controllers
                 Message = message
             };
         }
+        [HttpPost]
+        public async Task<AccountLoginResponse> ModifyNickName(AccountNickNameRequest request)
+        { 
+            var (isSuccess, message) = await _accountService.ModifyNickNameAsync(request.AccountId,request.NickName);
+            return new AccountLoginResponse
+            {
+                IsSuccess = isSuccess,
+                Message = message
+            };
+        }
     }
 }

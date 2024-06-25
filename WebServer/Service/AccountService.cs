@@ -3,6 +3,7 @@ using WebServer.Repository.Interface;
 using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Security.Principal;
 
 namespace WebServer.Service
 {
@@ -70,5 +71,27 @@ namespace WebServer.Service
 
             return (true, "로그인 성공");
         }
+        public async Task<(bool, string)> ModifyNickNameAsync(long accountid,string nickName)
+        {
+            //Validation Check
+            //if (nickName == null)
+            //{
+            //    string message = "Test"; // ID가 존재하지 않습니다.
+            //    return (false, message);
+            //}
+
+            var isSuccess = await _accountRepository.ModifyNickName(accountid, nickName);
+
+            if(isSuccess)
+            {
+                return (isSuccess, "닉네임 생성 완료");
+            }
+            else
+            {
+                return (isSuccess, "닉네임 생성 실패");
+            }
+
+        }
+
     }
 }

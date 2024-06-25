@@ -22,7 +22,7 @@ namespace WebServer.Repository
             return await _accountDbContext.Account.AnyAsync(x => x.UserId == id);
         }
 
-        public async Task<bool> CreateAsync(string id, string pw)
+        public async Task<bool> CreateAccountAsync(string id, string pw)
         {
             // 중복된 유저가 있는지 확인
             if (await IsAlreadyExistAsync(id))
@@ -38,6 +38,7 @@ namespace WebServer.Repository
                 // 추가 정보 생성
                 await CreateCurrencyInfo(accountId);
                 await CreateCharacterInfo(accountId);
+                await CreateNickName(accountId);
                 return true;
             }
 
@@ -61,7 +62,28 @@ namespace WebServer.Repository
 
             return accountEntity.AccountId; // 생성된 AccountId 반환
         }
+        private async Task<bool> CreateNickName(long accountId)
+        {
+            var accountNickNameEntity = new AccountNickNameEntity
+            {
+                AccountId = accountId,
+                AccountNickName = ""
+            };
+            await _accountDbContext.AccountNickName.AddAsync(accountNickNameEntity);
+            await _accountDbContext.SaveChangesAsync();
 
+            return true;
+        }
+        public async Task ModifyNickName(long accountId ,string nickname) //이거사용해서 변경하면됨
+        {
+            var accountNickNameEntity = await SelectNickNameTable(accountId);
+            await _accountDbContext.AccountNickName.AddAsync(accountNickNameEntity);
+            await _accountDbContext.SaveChangesAsync();
+        }
+        private async Task<AccountNickNameEntity> SelectNickNameTable(long accountId)
+        {
+            return await _accountDbContext.AccountNickName.AsNoTracking().SingleOrDefaultAsync(x => x.AccountId == accountId);
+        }
         private async Task CreateCurrencyInfo(long accountId)
         {
             var accountCurrencyEntity = new AccountCurrencyEntity
@@ -83,5 +105,7 @@ namespace WebServer.Repository
             await _accountDbContext.AccountCharacter.AddAsync(accountCharacterEntity);
             await _accountDbContext.SaveChangesAsync();
         }
+
+
     }
 }
