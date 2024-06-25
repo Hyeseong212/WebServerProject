@@ -24,12 +24,33 @@ namespace WebServer.Repository
 
         public async Task<bool> CreateAsync(string id, string pw)
         {
-            // 중복된 유저가 있는지?
+            // 중복된 유저가 있는지 확인
             if (await IsAlreadyExistAsync(id))
             {
                 return false;
             }
 
+            // 계정 생성 및 AccountId 가져오기
+            var accountId = await CreateAccountInfo(id, pw);
+
+            if (accountId != -1)
+            {
+                // 추가 정보 생성
+                await CreateCurrencyInfo(accountId);
+                await CreateCharacterInfo(accountId);
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<AccountEntity> GetAccountAsync(string id)
+        {
+            return await _accountDbContext.Account.AsNoTracking().SingleOrDefaultAsync(x => x.UserId == id);
+        }
+
+        private async Task<long> CreateAccountInfo(string id, string pw)
+        {
             var accountEntity = new AccountEntity
             {
                 UserId = id,
@@ -38,12 +59,29 @@ namespace WebServer.Repository
             await _accountDbContext.Account.AddAsync(accountEntity);
             await _accountDbContext.SaveChangesAsync();
 
-            return true;
+            return accountEntity.AccountId; // 생성된 AccountId 반환
         }
 
-        public async Task<AccountEntity> GetAccountAsync(string id)
+        private async Task CreateCurrencyInfo(long accountId)
         {
-            return await _accountDbContext.Account.AsNoTracking().SingleOrDefaultAsync(x => x.UserId == id);
+            var accountCurrencyEntity = new AccountCurrencyEntity
+            {
+                AccountId = accountId,
+                Gold = 0 // 기본 값 설정
+            };
+            await _accountDbContext.AccountCurrency.AddAsync(accountCurrencyEntity);
+            await _accountDbContext.SaveChangesAsync();
+        }
+
+        private async Task CreateCharacterInfo(long accountId)
+        {
+            var accountCharacterEntity = new AccountCharacterEntity
+            {
+                AccountId = accountId,
+                AccountCharacter = 1 // 기본 값 설정
+            };
+            await _accountDbContext.AccountCharacter.AddAsync(accountCharacterEntity);
+            await _accountDbContext.SaveChangesAsync();
         }
     }
 }

@@ -6,6 +6,8 @@ namespace WebServer.Repository
     public class AccountDbContext : DbContext
     {
         public DbSet<AccountEntity> Account { get; set; }
+        public DbSet<AccountCharacterEntity> AccountCharacter { get; set; }
+        public DbSet<AccountCurrencyEntity> AccountCurrency { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -18,6 +20,8 @@ namespace WebServer.Repository
         {
             // 코드를 이용해서 테이블을 만들 때, 어떤 형식으로 만들껀지 알려주기 위해 사용
             modelBuilder.Entity<AccountEntity>().HasKey(x => x.AccountId);
+            modelBuilder.Entity<AccountCharacterEntity>().HasKey(x => x.AccountId);
+            modelBuilder.Entity<AccountCurrencyEntity>().HasKey(x => x.AccountId);
         }
     }
 }

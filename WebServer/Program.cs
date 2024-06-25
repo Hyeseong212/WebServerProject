@@ -79,6 +79,8 @@ app.Run();
 // 계정 생성 시, User 기본 정보도 만들어주기
 // User 기본 데이터
 //  - 플레이할 수 있는 캐릭터 아이디
+//      - account_id(계정 ID)
+//      - account_character(계정에서 가지고있는 캐릭터)
 //  - 계정 생성 시, 기본으로 주어지는 Currency
 //  - 닉네임
 
