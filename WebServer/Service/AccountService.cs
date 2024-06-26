@@ -2,8 +2,6 @@
 using WebServer.Repository.Interface;
 using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Security.Principal;
 
 namespace WebServer.Service
 {
@@ -43,7 +41,7 @@ namespace WebServer.Service
             // 비밀번호 해싱
             string hashedPw = Utils.HashPassword(pw);
 
-            if (await _accountRepository.CreateAsync(id, hashedPw))
+            if (await _accountRepository.CreateAccountAsync(id, hashedPw))
             {
                 return (true, "계정이 성공적으로 생성되었습니다.");
             }

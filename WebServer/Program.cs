@@ -1,5 +1,6 @@
 using WebServer.Repository;
 using WebServer.Repository.Interface;
+using WebServer.Repository.Shop;
 using WebServer.Service;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,10 +12,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Set Service Singleton 
 builder.Services.AddSingleton<AccountService, AccountService>();
+builder.Services.AddSingleton<ShopService, ShopService>();
+
+//Set DB Service Singleton
 //builder.Services.AddSingleton<IAccountRepository, AccountRepositoryFromMemory>();
 builder.Services.AddSingleton<IAccountRepository, AccountRepositoryFromMySql>();
 builder.Services.AddSingleton<AccountDbContext, AccountDbContext>();
+
+builder.Services.AddSingleton<IShopRepository, ShopRepositoryFromMySql>();
+builder.Services.AddSingleton<ShopDbContext, ShopDbContext>();
 
 var app = builder.Build();
 

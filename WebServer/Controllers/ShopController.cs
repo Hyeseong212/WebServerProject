@@ -9,19 +9,23 @@ namespace WebServer.Controllers
     public class ShopController : ControllerBase
     {
         private readonly ILogger<ShopController> _logger;
+        private readonly ShopService _shopService;
 
-        public ShopController(ILogger<ShopController> logger)
+        public ShopController(ILogger<ShopController> logger, ShopService shopService)
         {
             _logger = logger;
+            _shopService = shopService;
         }
 
         [HttpPost]
-        public ShopBuyResponse Buy([FromBody] ShopBuyRequest request)
+        public async Task<ShopBuyResponse> Buy([FromBody] ShopBuyRequest request)
         {
-            // 아이템을 살 수 있는 유저인가?
-
-
-            return new ShopBuyResponse();
+            var (isSuccess, message) = await _shopService.Buy(request.AccountId, request.ShopId);
+            return new ShopBuyResponse
+            {
+                IsSuccess = isSuccess,
+                Message = message
+            };
         }
     }
 }

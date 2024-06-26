@@ -44,12 +44,40 @@ namespace WebServer.Repository
 
             return false;
         }
-
+        public async Task<bool> ModifyNickName(long accountId, string nickname) //이거사용해서 변경하면됨
+        {
+            var accountNickNameEntity = await SelectNickNameTable(accountId);
+            await _accountDbContext.AccountNickName.AddAsync(accountNickNameEntity);
+            await _accountDbContext.SaveChangesAsync();
+            return true;
+        }
         public async Task<AccountEntity> GetAccountAsync(string id)
         {
             return await _accountDbContext.Account.AsNoTracking().SingleOrDefaultAsync(x => x.UserId == id);
         }
+        public async Task<long> GetGoldAsync(long accountId)
+        {
+            var accountCurrency = await _accountDbContext.AccountCurrency
+                .AsNoTracking()
+                .SingleOrDefaultAsync(ac => ac.AccountId == accountId);
 
+            return accountCurrency?.Gold ?? 0;
+        }
+
+        public async Task<bool> UpdateGoldAsync(long accountId, long newGoldAmount)
+        {
+            var accountCurrency = await _accountDbContext.AccountCurrency
+                .SingleOrDefaultAsync(ac => ac.AccountId == accountId);
+
+            if (accountCurrency == null)
+            {
+                return false;
+            }
+
+            accountCurrency.Gold = newGoldAmount;
+            await _accountDbContext.SaveChangesAsync();
+            return true;
+        }
         private async Task<long> CreateAccountInfo(string id, string pw)
         {
             var accountEntity = new AccountEntity
@@ -62,6 +90,7 @@ namespace WebServer.Repository
 
             return accountEntity.AccountId; // 생성된 AccountId 반환
         }
+
         private async Task<bool> CreateNickName(long accountId)
         {
             var accountNickNameEntity = new AccountNickNameEntity
@@ -74,12 +103,7 @@ namespace WebServer.Repository
 
             return true;
         }
-        public async Task ModifyNickName(long accountId ,string nickname) //이거사용해서 변경하면됨
-        {
-            var accountNickNameEntity = await SelectNickNameTable(accountId);
-            await _accountDbContext.AccountNickName.AddAsync(accountNickNameEntity);
-            await _accountDbContext.SaveChangesAsync();
-        }
+
         private async Task<AccountNickNameEntity> SelectNickNameTable(long accountId)
         {
             return await _accountDbContext.AccountNickName.AsNoTracking().SingleOrDefaultAsync(x => x.AccountId == accountId);
