@@ -44,12 +44,17 @@ namespace WebServer.Repository
 
             return false;
         }
-        public async Task<bool> ModifyNickName(long accountId, string nickname) //이거사용해서 변경하면됨
+        public async Task<bool> ModifyNickName(long accountId, string nickname)
         {
             var accountNickNameEntity = await SelectNickNameTable(accountId);
-            await _accountDbContext.AccountNickName.AddAsync(accountNickNameEntity);
-            await _accountDbContext.SaveChangesAsync();
-            return true;
+            if (accountNickNameEntity != null)
+            {
+                accountNickNameEntity.AccountNickName = nickname;
+                _accountDbContext.AccountNickName.Update(accountNickNameEntity);
+                await _accountDbContext.SaveChangesAsync();
+                return true;
+            }
+            return false; // 계정 ID가 없는 경우 false 반환
         }
         public async Task<AccountEntity> GetAccountAsync(string id)
         {
