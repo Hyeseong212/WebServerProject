@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace WebServer.Model.DbEntity
 {
@@ -62,5 +64,11 @@ namespace WebServer.Model.DbEntity
         public int ItemId { get; set; }
         [Column("count")]
         public long count { get; set; }
+
+        public InventoryEntity()
+        {
+            ItemUID = Guid.NewGuid().ToString();
+        }
     }
+
 }
