@@ -21,7 +21,7 @@ namespace WebServer.Repository
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AccountEntity>().HasKey(x => x.AccountId);
-            modelBuilder.Entity<AccountCharacterEntity>().HasKey(x => x.Id);
+            modelBuilder.Entity<AccountCharacterEntity>().HasKey(x => new { x.AccountId, x.AccountCharacter });
             modelBuilder.Entity<AccountCurrencyEntity>().HasKey(x => x.Id);
             modelBuilder.Entity<AccountNickNameEntity>().HasKey(x => x.Id);
         }

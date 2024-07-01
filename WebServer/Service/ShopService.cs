@@ -40,6 +40,9 @@ namespace WebServer.Service
             // 아이템 구매 로직 (예: 골드 차감, 인벤토리에 아이템 추가 등)
             var userGold = await _accountRepository.GetGoldAsync(accountId);
             var isSuccess = await _accountRepository.UpdateGoldAsync(accountId, userGold - item.Price);
+
+
+
             if(isSuccess)
             {
                 return (true, "구매 성공");

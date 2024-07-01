@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebServer.Model;
 using WebServer.Model.DbEntity;
 using WebServer.Repository.Interface;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 
 namespace WebServer.Repository
 {
@@ -83,6 +82,55 @@ namespace WebServer.Repository
             await _accountDbContext.SaveChangesAsync();
             return true;
         }
+
+        // 트랜잭션을 걸어서 테스트하는 방법
+        // 여러개의 디비를 트랜잭션으로 묶을 수 는 없음
+        public async Task<bool> UpdateBuyItem(long accountId, long newGoldAmount, Item item)
+        {
+            //var accountCurrency = await _accountDbContext.AccountCurrency
+            //    .SingleOrDefaultAsync(ac => ac.AccountId == accountId);
+
+            //if (accountCurrency == null)
+            //{
+            //    return false;
+            //}
+
+            //accountCurrency.Gold = newGoldAmount;
+            //await _accountDbContext.SaveChangesAsync();
+
+
+            using var transaction = await _accountDbContext.Database.BeginTransactionAsync();
+
+            try
+            {
+                var accountCurrency = await _accountDbContext.AccountCurrency
+                .SingleOrDefaultAsync(ac => ac.AccountId == accountId);
+
+                if (accountCurrency == null)
+                {
+                    return false;
+                }
+
+                accountCurrency.Gold = newGoldAmount;
+                await _accountDbContext.SaveChangesAsync();
+
+                _accountDbContext.AccountCharacter.Add(new AccountCharacterEntity()
+                {
+                    AccountCharacter = 1,
+                    AccountId = accountId,
+                });
+                await _accountDbContext.SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+            }
+
+            return true;
+        }
+
+
         private async Task<long> CreateAccountInfo(string id, string pw)
         {
             var accountEntity = new AccountEntity
