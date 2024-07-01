@@ -16,27 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `account_character`
+-- Table structure for table `inventory`
 --
 
-DROP TABLE IF EXISTS `account_character`;
+DROP TABLE IF EXISTS `inventory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `account_character` (
+CREATE TABLE `inventory` (
+  `ItemUID` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `account_id` bigint NOT NULL,
-  `account_character` int NOT NULL,
-  PRIMARY KEY (`account_id`,`account_character`)
+  `item_id` int NOT NULL,
+  `count` bigint NOT NULL,
+  PRIMARY KEY (`ItemUID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `account_character`
+-- Dumping data for table `inventory`
 --
 
-LOCK TABLES `account_character` WRITE;
-/*!40000 ALTER TABLE `account_character` DISABLE KEYS */;
-INSERT INTO `account_character` VALUES (1,1),(5,1);
-/*!40000 ALTER TABLE `account_character` ENABLE KEYS */;
+LOCK TABLES `inventory` WRITE;
+/*!40000 ALTER TABLE `inventory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -48,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-01 20:22:14
+-- Dump completed on 2024-07-01 20:22:13

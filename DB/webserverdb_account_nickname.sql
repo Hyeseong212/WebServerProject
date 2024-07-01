@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: 192.168.123.1    Database: webserverdb
+-- Host: 127.0.0.1    Database: webserverdb
 -- ------------------------------------------------------
--- Server version	5.7.41-log
+-- Server version	8.0.37
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,11 +23,10 @@ DROP TABLE IF EXISTS `account_nickname`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `account_nickname` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `account_id` int(11) NOT NULL,
-  `account_NickName` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `account_id` int NOT NULL,
+  `account_NickName` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`account_id`,`account_NickName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +35,7 @@ CREATE TABLE `account_nickname` (
 
 LOCK TABLES `account_nickname` WRITE;
 /*!40000 ALTER TABLE `account_nickname` DISABLE KEYS */;
-INSERT INTO `account_nickname` VALUES (1,5,'이목잡이');
+INSERT INTO `account_nickname` VALUES (5,'이목잡이');
 /*!40000 ALTER TABLE `account_nickname` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-27 17:01:28
+-- Dump completed on 2024-07-01 20:22:13
