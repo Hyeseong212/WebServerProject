@@ -10,28 +10,22 @@ namespace WebServer.Service
     public class ShopService
     {
         private readonly ILogger<ShopService> _logger;
-        private readonly IShopRepository _shopRepository;
         private readonly IAccountRepository _accountRepository; // 추가
-        private readonly MessageHandler _messageHandler;
-        private readonly ItemHandler _itemHandler;
 
-        public ShopService(ILogger<ShopService> logger, IShopRepository shopRepository, IAccountRepository accountRepository)
+        public ShopService(ILogger<ShopService> logger, IAccountRepository accountRepository)
         {
             _logger = logger;
-            _shopRepository = shopRepository;
             _accountRepository = accountRepository; // 초기화
-            _messageHandler = new MessageHandler("Resources/MessagesInfo.csv");
-            _itemHandler = new ItemHandler("Resources/ShopItem.csv");
         }
         public async Task<(bool, string)> Buy(long accountId, int shopId)
         {
-            var item = _itemHandler.GetItemById(shopId);
+            var item = DataManager.Instance.itemHandler.GetItemById(shopId);
             if (item == null)
             {
                 return (false, "아이템을 찾을 수 없습니다");
             }
 
-            bool hasEnoughGold = await _shopRepository.CheckGoldAsync(accountId, item.Price);
+            bool hasEnoughGold = await _accountRepository.CheckGoldAsync(accountId, item.Price);
             if (!hasEnoughGold)
             {
                 return (false, "골드가 부족합니다");

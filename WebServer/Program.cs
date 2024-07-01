@@ -41,6 +41,8 @@ app.MapControllers();
 
 app.Run();
 
+DataManager.Instance.Init();
+
 
 // Rest (Representational State Transfer) Api
 // 쉽게 말하면 클라이언트와 서버가 인터넷(Http)을 통해 정보를 교환하기 위해 사용하는 인터페이스

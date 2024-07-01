@@ -22,13 +22,9 @@ namespace WebServer.Model.DbEntity
     public class AccountCharacterEntity
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("id")]
-        public long Id { get; set; }
-
         [Column("account_id")]
         public long AccountId { get; set; }
-
+        [Key]
         [Column("account_character")]
         public int AccountCharacter { get; set; }
     }
@@ -37,13 +33,9 @@ namespace WebServer.Model.DbEntity
     public class AccountCurrencyEntity
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("id")]
-        public long Id { get; set; }
-
         [Column("account_id")]
         public long AccountId { get; set; }
-
+        [Key]
         [Column("gold")]
         public long Gold { get; set; }
     }
@@ -52,14 +44,23 @@ namespace WebServer.Model.DbEntity
     public class AccountNickNameEntity
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("id")]
-        public long Id { get; set; }
-
         [Column("account_id")]
         public long AccountId { get; set; }
-
+        [Key]
         [Column("account_nickName")]
         public string AccountNickName { get; set; }
+    }
+    [Table("inventory")]
+    public class InventoryEntity
+    {
+        [Key]
+        [Column("ItemUID")]
+        public string ItemUID { get; set; }
+        [Column("account_id")]
+        public long AccountId { get; set; }
+        [Column("item_id")]
+        public int ItemId { get; set; }
+        [Column("count")]
+        public long count { get; set; }
     }
 }

@@ -87,18 +87,6 @@ namespace WebServer.Repository
         // 여러개의 디비를 트랜잭션으로 묶을 수 는 없음
         public async Task<bool> UpdateBuyItem(long accountId, long newGoldAmount, Item item)
         {
-            //var accountCurrency = await _accountDbContext.AccountCurrency
-            //    .SingleOrDefaultAsync(ac => ac.AccountId == accountId);
-
-            //if (accountCurrency == null)
-            //{
-            //    return false;
-            //}
-
-            //accountCurrency.Gold = newGoldAmount;
-            //await _accountDbContext.SaveChangesAsync();
-
-
             using var transaction = await _accountDbContext.Database.BeginTransactionAsync();
 
             try
@@ -183,6 +171,14 @@ namespace WebServer.Repository
             await _accountDbContext.SaveChangesAsync();
         }
 
+        public async Task<bool> CheckGoldAsync(long accountId, long itemGold)
+        {
+            var userGold = await _accountDbContext.AccountCurrency
+                .Where(ac => ac.AccountId == accountId)
+                .Select(ac => ac.Gold)
+                .FirstOrDefaultAsync();
 
+            return userGold >= itemGold;
+        }
     }
 }

@@ -10,5 +10,7 @@ namespace WebServer.Repository.Interface
         Task<bool> ModifyNickName(long accountId, string nickname);
         Task<long> GetGoldAsync(long accountId);
         Task<bool> UpdateGoldAsync(long accountId, long newGoldAmount);
+        Task<bool> CheckGoldAsync(long accountId, long itemGold);
+
     }
 }

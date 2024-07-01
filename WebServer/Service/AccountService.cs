@@ -9,32 +9,30 @@ namespace WebServer.Service
     {
         private readonly ILogger<AccountService> _logger;
         private readonly IAccountRepository _accountRepository;
-        private readonly MessageHandler _messageHandler;
 
         public AccountService(ILogger<AccountService> logger, IAccountRepository accountRepository)
         {
             _logger = logger;
             _accountRepository = accountRepository;
-            _messageHandler = new MessageHandler("Resources/MessagesInfo.csv");
         }
 
         public async Task<(bool, string)> CreateAsync(string id, string pw)
         {
             if (await _accountRepository.IsAlreadyExistAsync(id))
             {
-                string message = _messageHandler.SetMessage("Error", 2); // ID가 중복되었습니다.
+                string message = DataManager.Instance.messageHandler.GetMessage("Error", 2); // ID가 중복되었습니다.
                 return (false, message);
             }
 
             if (pw.Length < 10)
             {
-                string message = _messageHandler.SetMessage("Error", 3); // 비밀번호 10자 이상 만들어 주세요.
+                string message = DataManager.Instance.messageHandler.GetMessage("Error", 3); // 비밀번호 10자 이상 만들어 주세요.
                 return (false, message);
             }
 
             if (!Regex.IsMatch(pw, @"[a-zA-Z]") || !Regex.IsMatch(pw, @"\d") || !Regex.IsMatch(pw, @"[!@#$%^&*(),.?:{}|<>]"))
             {
-                string message = _messageHandler.SetMessage("Error", 4); // 특수문자, 숫자, 영어가 혼합되어야 합니다.
+                string message = DataManager.Instance.messageHandler.GetMessage("Error", 4); // 특수문자, 숫자, 영어가 혼합되어야 합니다.
                 return (false, message);
             }
 
@@ -47,7 +45,7 @@ namespace WebServer.Service
             }
             else
             {
-                string message = _messageHandler.SetMessage("Error", 6); // 계정 생성에 실패했습니다.
+                string message = DataManager.Instance.messageHandler.GetMessage("Error", 6); // 계정 생성에 실패했습니다.
                 return (false, message);
             }
         }
@@ -57,13 +55,13 @@ namespace WebServer.Service
             var account = await _accountRepository.GetAccountAsync(id);
             if (account == null)
             {
-                string message = _messageHandler.SetMessage("Error", 5); // ID가 존재하지 않습니다.
+                string message = DataManager.Instance.messageHandler.GetMessage("Error", 5); // ID가 존재하지 않습니다.
                 return (false, message);
             }
 
             if (!Utils.VerifyPassword(pw, account.UserPassword))
             {
-                string message = _messageHandler.SetMessage("Error", 1); // 올바르지 않은 비밀번호입니다.
+                string message = DataManager.Instance.messageHandler.GetMessage("Error", 1); // 올바르지 않은 비밀번호입니다.
                 return (false, message);
             }
 

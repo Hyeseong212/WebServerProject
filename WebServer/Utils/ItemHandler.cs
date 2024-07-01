@@ -27,9 +27,10 @@ public class ItemHandler
         ReadFile(csvPath);
 
         _timer = new Timer(CheckFileChanged, null, Timeout.Infinite, Timeout.Infinite);
+        _timer.Change(0, 5000);
     }
 
-    public void ReadFile(string csvPath)
+    private void ReadFile(string csvPath)
     {
         _idToItem.Clear();
         using (var reader = new StreamReader(_csvPath))
