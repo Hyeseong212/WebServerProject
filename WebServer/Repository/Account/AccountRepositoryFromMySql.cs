@@ -85,7 +85,7 @@ namespace WebServer.Repository
 
         // 트랜잭션을 걸어서 테스트하는 방법
         // 여러개의 디비를 트랜잭션으로 묶을 수 는 없음
-        public async Task<bool> UpdateBuyItem(long accountId, long newGoldAmount, Item item)
+        public async Task<bool> UpdateBuyItem(long accountId, long newGoldAmount, etcModel item)
         {
             using var transaction = await _accountDbContext.Database.BeginTransactionAsync();
 

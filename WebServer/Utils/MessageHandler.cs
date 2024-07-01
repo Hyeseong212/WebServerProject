@@ -32,7 +32,7 @@ public class MessageHandler
             var records = csv.GetRecords<MessageModel>().ToList();
             foreach (var record in records)
             {
-                var key = new CompositeKey(record.Type, record.MessageCode);
+                var key = new CompositeKey(record.TYPE, record.MessageCode);
                 _idToItem[key] = record.Message;
             }
         }

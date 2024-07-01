@@ -15,14 +15,14 @@ class GameDataManager
 public class ItemHandler
 {
     private readonly string _csvPath;
-    private Dictionary<int, Item> _idToItem { get; set; }
+    private Dictionary<int, etcModel> _idToItem { get; set; }
     private readonly Timer _timer;
     private DateTime _lastModified;
 
     public ItemHandler(string csvPath)
     {
         _csvPath = csvPath;
-        _idToItem = new Dictionary<int, Item>();
+        _idToItem = new Dictionary<int, etcModel>();
 
         ReadFile(csvPath);
 
@@ -36,7 +36,7 @@ public class ItemHandler
         using (var reader = new StreamReader(_csvPath))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
-            var records = csv.GetRecords<Item>().ToList();
+            var records = csv.GetRecords<etcModel>().ToList();
             foreach (var record in records)
             {
                 _idToItem.Add(record.ItemId, record);
@@ -46,7 +46,7 @@ public class ItemHandler
         _lastModified = File.GetLastWriteTime(csvPath);
     }
 
-    public Item GetItemById(int itemId)
+    public etcModel GetItemById(int itemId)
     {
         return _idToItem.TryGetValue(itemId, out var item) ? item : null;
     }

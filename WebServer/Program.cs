@@ -1,7 +1,9 @@
 using WebServer.Repository;
 using WebServer.Repository.Interface;
-using WebServer.Repository.Shop;
 using WebServer.Service;
+
+
+DataManager.Instance.Init();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,9 +23,6 @@ builder.Services.AddSingleton<ShopService, ShopService>();
 builder.Services.AddSingleton<IAccountRepository, AccountRepositoryFromMySql>();
 builder.Services.AddSingleton<AccountDbContext, AccountDbContext>();
 
-builder.Services.AddSingleton<IShopRepository, ShopRepositoryFromMySql>();
-builder.Services.AddSingleton<ShopDbContext, ShopDbContext>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,7 +40,6 @@ app.MapControllers();
 
 app.Run();
 
-DataManager.Instance.Init();
 
 
 // Rest (Representational State Transfer) Api
